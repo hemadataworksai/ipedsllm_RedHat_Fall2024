@@ -5,11 +5,15 @@ from src.langchain_bot.vector_store import retriever, retriever_prompt, model
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 from operator import itemgetter
-from langchain.memory import ChatMessageHistory
+# from langchain.memory import ChatMessageHistory
+from langchain_community.chat_message_histories import (
+    UpstashRedisChatMessageHistory,
+)
 from langchain_community.tools.sql_database.tool import QuerySQLDataBaseTool
 from langchain_openai import ChatOpenAI
 from langchain.chains import create_sql_query_chain
 from langchain_community.utilities.sql_database import SQLDatabase
+
 import os
 from dotenv import load_dotenv
 
@@ -19,6 +23,8 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2")
 LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY")
 db_url = os.getenv("DB_URL_1")
+redis_url = os.getenv("UPSTASH_URL")
+redis_token = os.getenv("UPSTASH_TOKEN")
 
 
 @st.cache_resource
@@ -49,7 +55,8 @@ def get_chain():
 
 
 def create_history(messages):
-    history = ChatMessageHistory()
+    history = UpstashRedisChatMessageHistory(
+        url=redis_url, token=redis_token, ttl=0, session_id="my-test-session")
     for message in messages:
         if message["role"] == "user":
             history.add_user_message(message["content"])
