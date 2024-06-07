@@ -2,9 +2,9 @@ name: Automation Test Workflow
 
 on:
   push:
-    branches: [ main ]
+    branches: [ test_branch ]
   pull_request:
-    branches: [ main ]
+    branches: [ test_branch ]
 
 jobs:
   build:
@@ -22,4 +22,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run custom test script
-      run: python ./test/test.py #create a folder named /test, and add test.py to that folder
+      env:
+        OPENAI_API_KEY: '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'
+        DB_URL_1: 'postgresql+psycopg2://doadmin:AVNS_Lke4NPamARm9-4X7IQu@db-postgresql-nyc3-10726-do-user-15531455-0.c.db.ondigitalocean.com:25060/defaultdb?options=-csearch_path%3Ddbo,ipedsdata'
+        LANGCHAIN_TRACING_V2: 'true'
+        LANGCHAIN_ENDPOINT: 'https://api.smith.langchain.com'
+        LANGCHAIN_API_KEY: 'ls__f770a32d1edc486489152cae4d01b510'
+      run: python ./src/langchain_bot/automated_testing_SQL.py

@@ -19,7 +19,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2")
 LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY")
-db_url = os.getenv("DB_URL")
+db_url = os.getenv("DB_URL_1")
 
 def get_testing_chain():
     print("Creating testing chain")
@@ -49,7 +49,7 @@ def query_chatbot_for_sql(question):
     return response['result']
 
 # Load test cases
-df = pd.read_excel('/Users/sankalpbiswal/ipedsllm/Tesing_DataworksAI_excel/Testing_DataworksAI_Text_to_SQL_Spring2024(1).xlsx')
+df = pd.read_excel('./Questions.xlsx')
 print(df.columns)
 
 test_results = []

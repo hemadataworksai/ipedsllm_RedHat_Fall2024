@@ -47,7 +47,7 @@ embedding_function = OpenAIEmbeddings(
 
 
 loader = JSONLoader(
-    file_path="data/tableinfo.json",
+    file_path="./data/tableinfo.json",
     jq_schema=".[].Table_Info[]",
     content_key="Table_Name",
     metadata_func=metadata_func,
