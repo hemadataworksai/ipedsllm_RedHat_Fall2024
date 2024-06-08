@@ -12,6 +12,7 @@ from langchain_core.output_parsers import StrOutputParser
 from table_details import table_chain as select_table
 from langchain_core.runnables import RunnablePassthrough
 from prompts import final_prompt, answer_prompt
+# import Levenshtein as le
 
 
 load_dotenv()
@@ -55,23 +56,35 @@ print(df.columns)
 test_results = []
 for index, row in df.iterrows():
     question = str(row['Human Language ']).strip() if pd.notna(row['Human Language ']) else ""
-    expected_sql = str(row['Expected SQL Query']).strip() if pd.notna(row['Expected SQL Query']) else ""
+    expectation = str(row['Expected SQL Query']).strip() if pd.notna(row['Expected SQL Query']) else ""
+    expected_sql = expectation.replace(" ", "")
     
     if question:
-        generated_sql = query_chatbot_for_sql(question)
+        generation = query_chatbot_for_sql(question)
+        generated_sql = generation.replace(" ", "")
         is_correct = (generated_sql == expected_sql)
         status = "Correct" if is_correct else "Incorrect"
+        # distance = le.distance(expected_sql, generated_sql)
+        # max_length = max(len(expected_sql), len(generated_sql))
+        # similarity = (1 - distance / max_length) * 100
         test_results.append({
             "Question": question,
             "Expected SQL": expected_sql,
             "Generated SQL": generated_sql,
             "Status": status
+            # "Similarity": similarity
         })
         
         # Introduce delay to avoid hitting rate limits
         time.sleep(10)
 
+print("Testing is completed. Next is the output result.\n")
+results = pd.DataFrame(test_results)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+print(results)
 # Save results to Excel
-results_df = pd.DataFrame(test_results)
-results_df.to_excel('test_results_sql.xlsx', index=False)
-print("Testing completed. Results are saved in 'test_results_sql.xlsx'.")
+# results_df = pd.DataFrame(test_results)
+# results_df.to_excel('test_results_sql.xlsx', index=False)
+# print("Testing completed. Results are saved in 'test_results_sql.xlsx'.")
