@@ -73,7 +73,7 @@ for index, row in df.iterrows():
             "Generated SQL": generated_sql,
             "Status": status
             # "Similarity": similarity
-        })
+        }) 
         
         # Introduce delay to avoid hitting rate limits
         time.sleep(10)
