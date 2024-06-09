@@ -28,4 +28,5 @@ jobs:
         LANGCHAIN_TRACING_V2: 'true'
         LANGCHAIN_ENDPOINT: 'https://api.smith.langchain.com'
         LANGCHAIN_API_KEY: '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'
+        LANGCHAIN_PROJECT: 'chatbot_test1'
       run: python ./src/langchain_bot/automated_testing_SQL.py
