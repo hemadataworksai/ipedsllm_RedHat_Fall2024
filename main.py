@@ -1,16 +1,19 @@
 import os
 import streamlit as st
+# from src.langchain_bot.langchain_utils import st
 from openai import OpenAI
 from src.langchain_bot.langchain_utils import invoke_chain
+from dotenv import load_dotenv
+load_dotenv()
 
 # from phoenix.trace.langchain import LangChainInstrumentor
 
 # LangChainInstrumentor().instrument()
 
-openai_api_key = os.getenv("API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 
-def main():
+def main(session_id):
     st.title("University Explorer AI Chatbot")
     # Set OpenAI API key from Streamlit secrets
     client = OpenAI(api_key=openai_api_key)
@@ -41,11 +44,11 @@ def main():
         with st.spinner("Generating response..."):
             with st.chat_message("assistant"):
                 response = invoke_chain(
-                    prompt, st.session_state.messages)
+                    prompt, st.session_state.messages,session_id)
                 st.markdown(response)
         st.session_state.messages.append(
             {"role": "assistant", "content": response})
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
