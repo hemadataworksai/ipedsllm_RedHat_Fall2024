@@ -23,10 +23,10 @@ jobs:
         pip install -r requirements.txt
     - name: Run custom test script
       env:
-        OPENAI_API_KEY: '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'
-        DB_URL_1: 'postgresql+psycopg2://doadmin:AVNS_Lke4NPamARm9-4X7IQu@db-postgresql-nyc3-10726-do-user-15531455-0.c.db.ondigitalocean.com:25060/defaultdb?options=-csearch_path%3Ddbo,ipedsdata'
-        LANGCHAIN_TRACING_V2: 'true'
-        LANGCHAIN_ENDPOINT: 'https://api.smith.langchain.com'
-        LANGCHAIN_API_KEY: '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'
-        LANGCHAIN_PROJECT: 'chatbot_test1'
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        DB_URL_1: ${{ secrets.DB_URL_1 }}
+        LANGCHAIN_TRACING_V2: ${{ secrets.LANGCHAIN_TRACING_V2 }}
+        LANGCHAIN_ENDPOINT: ${{ secrets.LANGCHAIN_ENDPOINT }}
+        LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+        LANGCHAIN_PROJECT: ${{ secrets.LANGCHAIN_PROJECT }}
       run: python ./src/langchain_bot/automated_testing_SQL.py
