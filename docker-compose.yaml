@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    command: uvicorn chromadb.app:app --reload --workers 1 --host 0.0.0.0 --port 8000 --log-config log_config.yml
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ALLOW_RESET=TRUE
+    ports:
+      - 8000:8000
+    volumes:
+      - index_data:/chroma/.chroma/index
+    networks:
+      - net
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: defaultdb
+      POSTGRES_USER: ipeds
+      POSTGRES_PASSWORD: y64HegZEqX3c
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

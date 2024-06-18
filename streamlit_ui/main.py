@@ -1,7 +1,9 @@
 import os
 import streamlit as st
 from openai import OpenAI
-from src.langchain_bot.langchain_utils import invoke_chain
+
+from langserve import RemoteRunnable
+
 
 # from phoenix.trace.langchain import LangChainInstrumentor
 
@@ -10,7 +12,11 @@ from src.langchain_bot.langchain_utils import invoke_chain
 openai_api_key = os.getenv("API_KEY")
 
 
-def main():
+def get_chat_session(user_id: str, conversation_id: str):
+
+    chat = RemoteRunnable("http://localhost:8001/",
+                          cookies={"user_id": user_id})
+
     st.title("University Explorer AI Chatbot")
     # Set OpenAI API key from Streamlit secrets
     client = OpenAI(api_key=openai_api_key)
@@ -40,12 +46,12 @@ def main():
         # Display assistant response in chat message container
         with st.spinner("Generating response..."):
             with st.chat_message("assistant"):
-                response = invoke_chain(
-                    prompt, st.session_state.messages)
+                response = chat.invoke({"question": prompt}, {'configurable': {
+                                       'conversation_id': conversation_id}})
                 st.markdown(response)
-        st.session_state.messages.append(
-            {"role": "assistant", "content": response})
+    #     st.session_state.messages.append(
+    #         {"role": "assistant", "content": response})
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()

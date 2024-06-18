@@ -15,29 +15,35 @@ db_url = os.getenv("DB_URL")
 def validate_email(email):
     # Define the regular expression for a valid email address
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}$'
-    
+
     # Use the re.match() function to check if the email matches the pattern
     if re.match(email_regex, email):
         return True
     else:
         return False
 
+
 def sign_up():
     db = SQLDatabase.from_uri(db_url)
-    with st.form(key = 'signup', clear_on_submit=True):
+    with st.form(key='signup', clear_on_submit=True):
         st.subheader(':green[Sign Up]')
         email = st.text_input(':blue[Email]', placeholder="Enter Your Email")
-        username = st.text_input(':blue[Username]', placeholder="Enter your Username")
-        password1 = st.text_input(':blue[Password]', placeholder="Enter your Password", type='password')
-        password2 = st.text_input(':blue[Confirm Password]', placeholder="Confirm your Password", type='password')
+        username = st.text_input(
+            ':blue[Username]', placeholder="Enter your Username")
+        password1 = st.text_input(
+            ':blue[Password]', placeholder="Enter your Password", type='password')
+        password2 = st.text_input(
+            ':blue[Confirm Password]', placeholder="Confirm your Password", type='password')
         query = f"Select * from public.user_details where username = '{username}' or email = '{email}'"
         if email:
             if validate_email(email):
                 if re.fullmatch(password1, password2) != None:
-                    hashed_password = stauth.utilities.hasher.Hasher([password1]).generate()
+                    hashed_password = stauth.utilities.hasher.Hasher(
+                        [password1]).generate()
                     date_joined = str(datetime.datetime.now())
                     if '' == db.run_no_throw(query):
-                        data_to_insert = (email, username, hashed_password[0], date_joined)
+                        data_to_insert = (
+                            email, username, hashed_password[0], date_joined)
                         db_insert(data_to_insert)
                         st.write('Successfully registered')
                     else:
@@ -53,7 +59,3 @@ def sign_up():
 
 # if __name__ == "__main__":
 #     sign_up()
-
-
-            
-
