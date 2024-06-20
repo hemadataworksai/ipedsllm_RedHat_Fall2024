@@ -127,3 +127,8 @@ print(results)
 results_df = pd.DataFrame(test_results)
 results_df.to_excel('test_results_sql.xlsx', index=False)
 print("Testing completed. Results are saved in 'test_results_sql.xlsx'.")
+
+total_count = len(results)
+correct_count = results[results['Status'].isin(['Output Correct', 'SQL Query Correct'])].shape[0]
+accuracy = correct_count / total_count * 100
+print(f"The accuracy of this test is {accuracy:.2f}%")
