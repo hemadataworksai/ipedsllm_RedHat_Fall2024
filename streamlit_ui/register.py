@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 load_dotenv()
 db_url = os.getenv("DB_URL")
 
-
 def validate_email(email):
     # Define the regular expression for a valid email address
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{1,3}$'

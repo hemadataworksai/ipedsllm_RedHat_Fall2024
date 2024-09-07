@@ -11,14 +11,6 @@ import uuid
 load_dotenv()
 
 st.set_page_config(page_title="Login", page_icon="👋", layout="centered")
-
-
-# current_dir = os.path.dirname(os.path.abspath(__file__))
-# utils_dir = os.path.join(
-#     current_dir, 'C:/Users/abhie/OneDrive - Northeastern University/text2sql_prod')
-# sys.path.append(utils_dir)
-
-
 # ==========================================================DB connection=================================================================
 db_url = os.getenv("DB_URL")
 print("Database connection", db_url)

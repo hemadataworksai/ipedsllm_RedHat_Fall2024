@@ -1,16 +1,16 @@
 import psycopg2
+import os
 
 def db_insert(data_to_insert):
     try:
         # Establish the connection
         conn = psycopg2.connect(
             dbname="defaultdb", 
-            user="doadmin", 
-            password="AVNS_Lke4NPamARm9-4X7IQu", 
+            user=os.getenv('DB_Username'), 
+            password=os.getenv('DB_Password'), 
             host="db-postgresql-nyc3-10726-do-user-15531455-0.c.db.ondigitalocean.com", 
-            port="25060"
+            port=os.getenv('DB_Port')
         )
-    
         # Create a cursor object
         cur = conn.cursor()
     
