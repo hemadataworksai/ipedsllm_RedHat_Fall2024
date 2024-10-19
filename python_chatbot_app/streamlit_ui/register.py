@@ -51,7 +51,3 @@ def sign_up():
         bt1, bt2, bt3, bt4, bt5 = st.columns(5)
         with bt3:
             st.form_submit_button(label=':red[Sign Up]')
-
-
-# if __name__ == "__main__":
-#     sign_up()

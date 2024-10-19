@@ -17,8 +17,4 @@ RUN python -m venv venv && \
 
 COPY . .
 
-EXPOSE 8001
-EXPOSE 8080
-EXPOSE 8501
-
 CMD ["./venv/bin/streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

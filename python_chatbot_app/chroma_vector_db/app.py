@@ -8,15 +8,12 @@ from uuid import uuid4
 from dotenv import load_dotenv
 load_dotenv()
 
-CHROMADB_HOST = os.getenv('CHROMADB_HOST')
-CHROMADB_PORT = os.getenv('CHROMADB_PORT')
+CHROMADB_URL= os.getenv('CHROMADB_URL')
 settings = Settings(anonymized_telemetry=False, allow_reset=True)
-BASE_PATH = '/api/v1'
-FULL_URL = f"http://{CHROMADB_HOST}:{CHROMADB_PORT}{BASE_PATH}"
 
 try:
     client = chromadb.HttpClient(
-        host=FULL_URL, settings=settings)
+        host=CHROMADB_URL, settings=settings)
 
     collection_name = os.getenv('COLLECTION_NAME')
     collection = client.get_or_create_collection(collection_name)
@@ -41,7 +38,7 @@ try:
         metadata["Column_Description"] = str(cdesc)
         return metadata
     
-    openai_api_key = os.getenv("OPENAI_API_KEY")  # Adjust if necessary
+    openai_api_key = os.getenv("OPENAI_API_KEY")
     embedding_function = OpenAIEmbeddings(
         openai_api_key=openai_api_key, model=os.getenv('TEXT_EMBEDDING'))
 

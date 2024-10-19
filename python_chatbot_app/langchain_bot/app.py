@@ -63,7 +63,7 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8501"],  # Adjust to specific domains if needed
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -112,8 +112,6 @@ def _per_request_config_modifier(
     configurable = config.get("configurable", {})
     user_id = request.cookies.get("user_id", None)
     
-    print("====================USER_ID BY ABHISHEK=====================",user_id)
-
     if user_id is None:
         raise HTTPException(
             status_code=400,
@@ -133,7 +131,7 @@ chain_with_history = RunnableWithMessageHistory(
     chain,
     create_session_factory(),
     input_messages_key="question",
-    history_messages_key="history",
+    history_messages_key="messages",
     history_factory_config=[
         ConfigurableFieldSpec(
             id="user_id",

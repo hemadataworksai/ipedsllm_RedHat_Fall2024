@@ -12,8 +12,8 @@ def db_insert(data_to_insert):
         )
         cur = conn.cursor()
     
-        insert_query = """
-                        INSERT INTO public.user_details (email, username, password, date_joined)
+        insert_query = f"""
+                        INSERT INTO {os.getenv('POSTGRES_USR_TBL')} (email, username, password, date_joined)
                         VALUES (%s, %s, %s, %s)
                         """
         cur.execute(insert_query, data_to_insert)

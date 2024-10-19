@@ -9,14 +9,12 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 collection_name = os.getenv('COLLECTION_NAME')
-CHROMADB_HOST = os.getenv('CHROMADB_HOST')
-CHROMADB_PORT = os.getenv('CHROMADB_PORT')
-settings = Settings(anonymized_telemetry=False, allow_reset=True)
+CHROMADB_URL= os.getenv('CHROMADB_URL')
+settings = Settings(anonymized_telemetry=False, allow_reset=False)
 
 client = chromadb.HttpClient(
-    host=CHROMADB_HOST, port=CHROMADB_PORT, settings=settings)
+    host=CHROMADB_URL, settings=settings)
 
-print("==========CHROMADB CONNECTION ESTABLISHED==============")
 embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY, model=os.getenv('TEXT_EMBEDDING')
 )
@@ -26,7 +24,6 @@ vectorstore = Chroma(client=client, collection_name=collection_name,
 
 retriever = vectorstore.as_retriever()
 
-# Define your template
 template = """Answer the question based only on the following context:
 {context}
 Search for the table descriptions in the context and accordingly search for column names and associated column description. Include only relevant tables and columns which can be used by the downstream Text-to-SQL Agent to create SQL Queries for generating answer.

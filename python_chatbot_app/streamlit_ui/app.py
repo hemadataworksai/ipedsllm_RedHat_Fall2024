@@ -1,5 +1,4 @@
 from main import get_chat_session
-import sys
 import streamlit_authenticator as stauth
 import streamlit as st
 from langchain_community.utilities.sql_database import SQLDatabase
@@ -9,7 +8,6 @@ import ast
 from dotenv import load_dotenv
 import uuid
 load_dotenv()
-import http.cookies as Cookie
 
 st.set_page_config(page_title="Login", page_icon="👋", layout="centered")
 
@@ -17,7 +15,7 @@ db_url = os.getenv("POSTGRES_DB_URL")
 #==========================================================DB connection=================================================================
 db = SQLDatabase.from_uri(db_url)
 
-query = "Select email, username, password from public.user_details"
+query = f"Select email, username, password from {os.getenv('POSTGRES_USR_TBL')}"
 input = db.run_no_throw(query)
 credentials = {'usernames': {}}
 
@@ -47,15 +45,17 @@ if username:
             authenticator.logout('Logout', 'main')
             
             user_id = username
-            
             conversation_id = str(uuid.uuid4())
             st.write(f'Welcome *{username}*')
             
-            # Set cookies for conversation_id and user_id (for consistency with FastAPI)
             st.session_state['user_id'] = user_id
-            st.session_state['conversation_id'] = conversation_id
-            print(f'USER ID IN STREAMLIT APP-----USER ID----{user_id}---Conv ID---{conversation_id}')
-            get_chat_session(user_id, conversation_id)
+            if 'conversation_id' not in st.session_state:
+                st.session_state['conversation_id'] = None
+                
+            if st.session_state['conversation_id'] is None:
+                st.session_state['conversation_id'] = conversation_id
+            
+            get_chat_session(str(st.session_state['user_id']),str(st.session_state['conversation_id']))
             
         elif not authentication_status:
             with info:
