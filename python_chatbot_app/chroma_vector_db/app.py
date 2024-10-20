@@ -46,7 +46,7 @@ try:
     loader = JSONLoader(
         file_path=file_path,
         jq_schema=".[].Table_Info[]",
-        content_key="Table_Name",
+        content_key="Table_Description",
         metadata_func=metadata_func,
     )
     data = loader.load()
