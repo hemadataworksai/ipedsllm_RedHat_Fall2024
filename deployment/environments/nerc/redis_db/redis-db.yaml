@@ -19,8 +19,14 @@ spec:
         image: redis:latest
         env:
         - name: UPSTASH_URL
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: UPSTASH_URL
         - name: UPSTASH_TOKEN
-          value: """
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: UPSTASH_TOKEN
         ports:
         - containerPort: 6379

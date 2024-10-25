@@ -18,17 +18,42 @@ spec:
       - name: postgres
         image: postgres:latest
         env:
-        - name: POSTGRES_DB_NAME
-          value: "defaultdb"
-        - name: POSTGRES_DB_USERNAME
-          value: ""
-        - name: POSTGRES_DB_PASSWORD
-          value: ""
         - name: POSTGRES_DB_HOST
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_HOST
+        - name: POSTGRES_DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_USERNAME            
+        - name: POSTGRES_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_PASSWORD            
+        - name: POSTGRES_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_NAME            
         - name: POSTGRES_DB_PORT
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_PORT
         - name: POSTGRES_DB_URL
-          value: ""
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_DB_URL
+        - name: POSTGRES_USR_TBL
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secrets
+              key: POSTGRES_USR_TBL
         ports:
         - containerPort: 5432
+
+        
