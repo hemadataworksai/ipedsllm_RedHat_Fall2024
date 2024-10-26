@@ -8,13 +8,13 @@ from uuid import uuid4
 from dotenv import load_dotenv
 load_dotenv()
 
-CHROMADB_URL= os.getenv('CHROMADB_URL')
-settings = Settings(anonymized_telemetry=False, allow_reset=True)
+CHROMADB_HOST = os.getenv('CHROMADB_HOST')
+CHROMADB_PORT = os.getenv('CHROMADB_PORT')
+settings = Settings(anonymized_telemetry=False, allow_reset=True,chroma_server_host=CHROMADB_HOST,chroma_server_http_port=CHROMADB_PORT,chroma_server_api_default_path= "/api/v1" )
+
 
 try:
-    client = chromadb.HttpClient(
-        host=CHROMADB_URL, settings=settings)
-
+    client = chromadb.Client(settings=settings)
     collection_name = os.getenv('COLLECTION_NAME')
     collection = client.get_or_create_collection(collection_name)
 
