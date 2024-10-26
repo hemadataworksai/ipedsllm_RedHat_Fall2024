@@ -19,7 +19,7 @@ RUN python -m venv venv && \
     pip install -r requirements.txt
 
 
-EXPOSE 8000/tcp
+EXPOSE 8002/tcp
 
 
 CMD ["./venv/bin/python", "app.py"]
