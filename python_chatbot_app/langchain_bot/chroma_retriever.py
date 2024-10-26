@@ -9,11 +9,12 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 collection_name = os.getenv('COLLECTION_NAME')
-CHROMADB_URL= os.getenv('CHROMADB_URL')
-settings = Settings(anonymized_telemetry=False, allow_reset=False)
+CHROMADB_HOST = os.getenv('CHROMADB_HOST')
+CHROMADB_PORT = os.getenv('CHROMADB_PORT')
 
-client = chromadb.HttpClient(
-    host=CHROMADB_URL, settings=settings)
+settings = Settings(anonymized_telemetry=False, allow_reset=True,chroma_server_host=CHROMADB_HOST,chroma_server_http_port=CHROMADB_PORT,chroma_server_api_default_path= "/api/v1" )
+
+client = chromadb.Client(settings=settings)
 
 embedding_function = OpenAIEmbeddings(
     openai_api_key=OPENAI_API_KEY, model=os.getenv('TEXT_EMBEDDING')
