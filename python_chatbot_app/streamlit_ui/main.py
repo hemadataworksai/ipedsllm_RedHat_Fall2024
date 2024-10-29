@@ -4,6 +4,7 @@ from langserve import RemoteRunnable
 from dotenv import load_dotenv
 load_dotenv()
 
+@st.cache_resource
 def get_chat_session(user_id: str, conversation_id: str):
     chat = RemoteRunnable(os.getenv('FAST_API_URL'),
                           cookies={"user_id": user_id})
