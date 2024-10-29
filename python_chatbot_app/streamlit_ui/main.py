@@ -4,8 +4,6 @@ from langserve import RemoteRunnable
 from dotenv import load_dotenv
 load_dotenv()
 
-#Using cache memory for storing chat hostory
-@st.cache_resource
 def get_chat_session(user_id: str, conversation_id: str):
     chat = RemoteRunnable(os.getenv('FAST_API_URL'),
                           cookies={"user_id": user_id})
