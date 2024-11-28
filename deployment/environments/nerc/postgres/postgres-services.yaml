@@ -1,59 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres-deployment
+  name: postgresql
+  namespace: abhiemin-dev
   labels:
-    app: postgres
+    app: postgresql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      deployment: postgresql
   template:
     metadata:
       labels:
-        app: postgres
+        deployment: postgresql
     spec:
       containers:
-      - name: postgres
-        image: postgres:latest
-        env:
-        - name: POSTGRES_DB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_HOST
-        - name: POSTGRES_DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_USERNAME            
-        - name: POSTGRES_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_PASSWORD            
-        - name: POSTGRES_DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_NAME            
-        - name: POSTGRES_DB_PORT
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_PORT
-        - name: POSTGRES_DB_URL
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_DB_URL
-        - name: POSTGRES_USR_TBL
-          valueFrom:
-            secretKeyRef:
-              name: postgres-secrets
-              key: POSTGRES_USR_TBL
-        ports:
-        - containerPort: 5432
-
-        
+        - name: postgresql
+          image: 'image-registry.openshift-image-registry.svc:5000/openshift/postgresql@sha256:aaf4d9767040dfd9586c48930c1e5b164f0e611361f951933f99149a8d9b3fe0'
+          ports:
+            - containerPort: 5432
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
