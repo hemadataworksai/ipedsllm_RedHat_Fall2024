@@ -19,3 +19,4 @@ sse_starlette==2.1.3
 starlette==0.39.2
 upstash-redis==1.2.0
 uvicorn==0.29.0
+httpx==0.27.2

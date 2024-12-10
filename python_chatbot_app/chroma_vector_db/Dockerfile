@@ -1,4 +1,4 @@
-FROM docker.io/python:3.11-slim
+FROM quay.io/fedora/python-311
 
 
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -13,13 +13,11 @@ WORKDIR /app
 COPY . .
 
 
-RUN python -m venv venv && \
-    . venv/bin/activate && \
-    pip install --upgrade pip && \
+RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
 
 EXPOSE 8002/tcp
 
 
-CMD ["./venv/bin/python", "app.py"]
+CMD ["python", "app.py"]
